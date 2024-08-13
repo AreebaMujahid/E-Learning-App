@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Class</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Favicons -->
+  <!-- Favicons -->
+    <link href="{{ url_for('static', filename='assets/img/favicon.png') }}" rel="icon">
+    <link href="{{ url_for('static', filename='assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  
+
+<!-- Vendor CSS Files -->
+    <link href="{{ url_for('static', filename='assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/vendor/aos/aos.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='assets/css/main.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <style>
+        .form-container {
+            display: none;
+            margin-top: 20px;
+        }
+        .item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .details {
+            flex: 1;
+            margin-right: 10px; /* Added to give space between details and button */
+        }
+        .button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            background-color: #f44;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #d33;
+        }
+    </style>
+
+    <script>
+        function ViewClass(courseid){
+            window.location.href = `/viewclass/${courseid}`;
+        }
+        function shareNotes(courseid)
+        {
+            window.location.href = `/share_notes/${courseid}`;
+        }
+        function showAssignmentForm() {
+            $('#assignmentModal').modal('show');
+        }
+        function toggleForm(formId) {
+            var form = document.getElementById(formId);
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+
+        function deleteCourse(courseId) {
+            if (confirm('Are you sure you want to delete this course?')) {
+                window.location.href = `/admin/delete-course/${courseId}`;
+            }
+        }
+
+        function deleteUser(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                window.location.href = `/admin/delete-user/${userId}`;
+            }
+        }
+
+        function updateCourse(courseId) {
+            if (confirm('Are you sure you want to update this course?')) {
+                window.location.href = `/admin/update-course/${courseId}`;
+            }
+        }
+
+        function updateUser(userId) {
+            if (confirm('Are you sure you want to update this user?')) {
+                window.location.href = `/admin/update-user/${userId}`;
+            }
+        }
+        function ViewClass(courseid){
+            window.location.href = `/viewclass/${courseid}`;
+        }
+        function enrollStudent(){
+            window.location.href = `/enroll`;
+
+        }
+    </script>
+</head>
+<body>
+
+    <header id="header" class="header d-flex align-items-center sticky-top">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center">
+  
+            <a href="index.html" class="logo d-flex align-items-center me-auto">
+              <!-- Uncomment the line below if you also wish to use an image logo -->
+              <!-- <img src="assets/img/logo.png" alt=""> -->
+              <h1 class="sitename">E-Learning</h1>
+            </a>
+      
+            <nav id="navmenu" class="navmenu">
+              <ul>
+                <li><a href="{{ url_for('user_home') }}" class="active">Home<br></a></li>
+                <li><a href="{{ url_for('coursespage') }}">Courses</a></li>
+                
+
+                <form action="{{ url_for('logout') }}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger mb-3">Logout</button>
+                </form>
+                
+              </ul>
+              
+            </nav>
+      
+            
+            
+    
+      
+          </div>
+    </header>
+
+    <div class="container mt-5">
+        <h2 class="mb-4">Class Enrollment Details</h2>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Full Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in enrollment_data %}
+                <tr>
+                    <td>{{ item.user_id }}</td>
+                    <td>{{ item.username }}</td>
+                    <td>{{ item.role }}</td>
+                    <td>{{ item.full_name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h1 class="mt-5 mb-4">Course Notes</h1>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-light">
+                <tr>
+                    <th>Note Title</th>
+                    <th>Uploaded At</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for note in course_notes %}
+                <tr>
+                    <td>{{ note.note }}</td>
+                    <td>{{ note.uploaded_at }}</td>
+                    <td><a href="{{ url_for('uploaded_file', filename=note.file_url) }}" class="btn btn-primary" download>Download PDF</a></td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3">No notes available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container mt-5">
+        <h2>Assignments</h2>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-light">
+                <tr>
+                    <th>Assignment Name</th>
+                    <th>Assignment ID</th>
+                    <th>File</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for assignment in assignments %}
+                <tr>
+                    <td>{{ assignment.assignment_name }}</td>
+                    <td>{{ assignment.assignment_id }}</td>
+                    <td><a href="{{ url_for('uploaded_file', filename=assignment.file_url) }}" download>Download PDF</a></td>
+                    <td>
+                        <button class="btn btn-success btn-custom" onclick="showSolutionModal('{{ assignment.assignment_id }}', '{{ course_id }}', '{{ assignment.assignment_name }}')">Add Solution</button>
+                    </td>
+                    {% if session.role == 'teacher' %}
+                    <td>
+                        <a href="{{ url_for('view_all_submissions', course_id=course_id, assignment_id=assignment.assignment_id) }}" class="btn btn-info">View All Submissions</a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4">No assignments available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if session.role == 'teacher' %}
+    <div class="container mt-5">
+        <h1>Submitted Solutions</h1>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-light">
+                <tr>
+                    <th>Solution Name</th>
+                    <th>Student ID</th>
+                    <th>Assignment Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for solution in solutions %}
+                <tr>
+                    <td>{{ solution.solution_name }}</td>
+                    <td>{{ solution.user_id }}</td>
+                    <td>{{ solution.assignment_name }}</td>
+                    <td><a href="{{ url_for('uploaded_file', filename=solution.file_url) }}" download>Download Solution</a></td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4">No solutions available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    {% if session.role == 'student' %}
+    <div class="container mt-5">
+        <h1>Your Grades</h1>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-light">
+                <tr>
+                    <th>Assignment Name</th>
+                    <th>Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if grades %}
+                    {% for grade in grades %}
+                    <tr>
+                        <td>{{ grade.assignment_name }}</td>
+                        <td>{{ grade.marks }}</td>
+                    </tr>
+                    {% else %}
+                    <!-- This else will be triggered if grades is empty -->
+                    <tr>
+                        <td colspan="2">No grades available.</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                <!-- This else will be triggered if grades is None or evaluates to False -->
+                <tr>
+                    <td colspan="2">No grades available.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+
+
+
+
+
+    <!-- Modal for Adding Solution -->
+    <div class="modal fade" id="solutionModal" tabindex="-1" role="dialog" aria-labelledby="solutionModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="solutionModalLabel">Add Solution</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/add_solution" method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <input type="hidden" id="solution_course_id" name="course_id">
+                        <input type="hidden" id="solution_assignment_id" name="assignment_id">
+                        <div class="form-group">
+                            <label for="solution_name">Solution Name</label>
+                            <input type="text" class="form-control" id="solution_name" name="solution_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="solution_file">Upload Solution (PDF or other)</label>
+                            <input type="file" class="form-control-file" id="solution_file" name="file" accept=".pdf, .doc, .docx" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit Solution</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Popper.js (needed for Bootstrap tooltips and popovers) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Custom Script to Show Modal -->
+    <script>
+        function showSolutionModal(assignmentId, courseId, assignmentName) {
+            console.log("Assignment ID:", assignmentId);
+            console.log("Course ID:", courseId);
+
+            // Set hidden inputs and modal title
+            document.getElementById('solution_course_id').value = courseId;
+            document.getElementById('solution_assignment_id').value = assignmentId;
+            document.getElementById('solutionModalLabel').textContent = 'Add Solution for ' + assignmentName;
+
+            // Show the modal
+            $('#solutionModal').modal('show');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Events - Mentor Bootstrap Template</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Favicons -->
+  <!-- Favicons -->
+  <link href="{{ url_for('static', filename='assets/img/favicon.png') }}" rel="icon">
+  <link href="{{ url_for('static', filename='assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  
+
+<!-- Vendor CSS Files -->
+<link href="{{ url_for('static', filename='assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='assets/vendor/aos/aos.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+
+<!-- Main CSS File -->
+<link href="{{ url_for('static', filename='assets/css/main.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+      
+    <meta charset="utf-8">
+    <title>Admin Home</title>
+    <style>
+        .form-container {
+            display: none;
+            margin-top: 20px;
+        }
+        .item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .details {
+            flex: 1;
+            margin-right: 10px; /* Added to give space between details and button */
+        }
+        .button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            background-color: #f44;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #d33;
+        }
+    </style>
+
+    <script>
+        function toggleForm(formId) {
+            var form = document.getElementById(formId);
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+
+        function deleteCourse(courseId) {
+            if (confirm('Are you sure you want to delete this course?')) {
+                window.location.href = `/admin/delete-course/${courseId}`;
+            }
+        }
+
+        function deleteUser(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                window.location.href = `/admin/delete-user/${userId}`;
+            }
+        }
+
+        function updateCourse(courseId) {
+            if (confirm('Are you sure you want to update this course?')) {
+                window.location.href = `/admin/update-course/${courseId}`;
+            }
+        }
+
+        function updateUser(userId) {
+            if (confirm('Are you sure you want to update this user?')) {
+                window.location.href = `/admin/update-user/${userId}`;
+            }
+        }
+        function ViewClass(courseid){
+            window.location.href = `/viewclass/${courseid}`;
+        }
+        function enrollStudent(){
+            window.location.href = `/enroll`;
+
+        }
+    </script>
+</head>
+
+<body class="index-page">
+
+    <header id="header" class="header d-flex align-items-center sticky-top">
+      <div class="container-fluid container-xl position-relative d-flex align-items-center">
+  
+        <a href="index.html" class="logo d-flex align-items-center me-auto">
+          <!-- Uncomment the line below if you also wish to use an image logo -->
+          <!-- <img src="assets/img/logo.png" alt=""> -->
+          <h1 class="sitename">E-Learning</h1>
+        </a>
+  
+        <nav id="navmenu" class="navmenu">
+            <ul>
+              <li><a href="{{ url_for('admin_home') }}" class="active">Home<br></a></li>
+              <li><a href="{{ url_for('coursespage') }}">Courses</a></li>
+              <li><a href="{{url_for('students')}}">Students</a></li>
+
+              <form action="{{ url_for('logout') }}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-danger mb-3">Logout</button>
+              </form>
+              
+            </ul>
+          </nav>
+    
+          
+          <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#enrollModal">Enroll student in course</button>
+
+  
+      </div>
+    </header>
+
+
+
+    <div class="container mt-5">
+    <h2>Students</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Created at</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>{{ student[0] }}</td>
+                    <td>{{ student[1] }}</td>
+                    <td>{{ student[3] }}</td>
+                    <td>{{ student[4] }}</td>
+                    <td>{{ student[5] }}</td>
+                    <td>{{ student[6] }}</td>
+
+                    <td>
+                        <button class="btn btn-primary" onclick="openUpdateModal({{ student[0] }}, '{{ student[1] }}', '{{ student[4] }}', '{{ student[5] }}', '{{ student[3] }}')">Update</button>
+                        <button class="button" onclick="deleteUser({{ student[0] }})">Delete</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  
+    <!-- Main JS File -->
+    <script src="assets/js/main.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  
+    <div class="modal fade" id="enrollModal" tabindex="-1" role="dialog" aria-labelledby="enrollModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="enrollModalLabel">Enroll Student in Course</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="{{ url_for('enroll_student') }}">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="course_id">Course ID:</label>
+                            <input type="number" class="form-control" id="course_id" name="course_id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="student_id">Student ID:</label>
+                            <input type="number" class="form-control" id="student_id" name="student_id" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Enroll</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">Add Teacher</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ url_for('add_User') }}" method="post">
+                    <div class="modal-body">
+                        <label for="teacher_username">Username:</label>
+                        <input type="text" class="form-control" id="teacher_username" name="username" required><br>
+                        <label for="teacher_password">Password:</label>
+                        <input type="password" class="form-control" id="teacher_password" name="password" required><br>
+                        <label for="teacher_full_name">Full Name:</label>
+                        <input type="text" class="form-control" id="teacher_full_name" name="full_name" required><br>
+                        <label for="teacher_email">Email:</label>
+                        <input type="email" class="form-control" id="teacher_email" name="email" required><br>
+                        <label>User Type:</label><br>
+                        <input type="radio" id="teacher" name="user_type" value="teacher" required>
+                        <label for="teacher">Teacher</label>
+                        <input type="radio" id="student" name="user_type" value="student" required>
+                        <label for="student">Student</label><br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Teacher</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  
+    <div class="modal fade" id="enrollModal" tabindex="-1" role="dialog" aria-labelledby="enrollModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="enrollModalLabel">Enroll Student in Course</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="{{ url_for('enroll_student') }}">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="course_id">Course ID:</label>
+                            <input type="number" class="form-control" id="course_id" name="course_id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="student_id">Student ID:</label>
+                            <input type="number" class="form-control" id="student_id" name="student_id" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Enroll</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="updateUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateUserModalLabel">Update User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="updateUserForm" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" id="user_id" name="user_id">
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="full_name">Full Name:</label>
+                            <input type="text" class="form-control" id="full_name" name="full_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Role:</label>
+                            <select class="form-control" id="role" name="role">
+                                <option value="teacher">Teacher</option>
+                                <option value="student">Student</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">New Password (leave empty to keep current password):</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update User</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    
+
+   <!-- jQuery -->
+   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+   <!-- Popper.js (needed for Bootstrap tooltips and popovers) -->
+   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+   <!-- Bootstrap JS -->
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+   <script>
+    function openUpdateModal(userId, username, fullName, email, role) {
+        // Set form action URL
+        const form = document.getElementById('updateUserForm');
+        form.action = `/admin/update-user/${userId}`;
+
+        // Populate form fields
+        document.getElementById('user_id').value = userId;
+        document.getElementById('username').value = username;
+        document.getElementById('full_name').value = fullName;
+        document.getElementById('email').value = email;
+        document.getElementById('role').value = role;
+
+        // Show the modal
+        $('#updateUserModal').modal('show');
+    }
+</script>
+  
+
+</body>
+</html>

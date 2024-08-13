@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Share Notes</title>
+</head>
+<body>
+    <h1>Share Course Notes</h1>
+    <form action="{{ url_for('upload_note', course_id=course_id) }}" method="post" enctype="multipart/form-data">
+        <label for="note_title">Note Title:</label>
+        <input type="text" id="note_title" name="note_title" required>
+        <br>
+        <label for="file">Upload PDF:</label>
+        <input type="file" id="file" name="file" accept=".pdf" required>
+        <br>
+        <button type="submit" class="button">Share notes</button>
+    </form>
+</body>
+</html>

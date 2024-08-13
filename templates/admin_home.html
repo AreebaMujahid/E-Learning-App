@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Events - Mentor Bootstrap Template</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <!-- Favicons -->
+  <link href="{{ url_for('static', filename='assets/img/favicon.png') }}" rel="icon">
+  <link href="{{ url_for('static', filename='assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  
+
+<!-- Vendor CSS Files -->
+<link href="{{ url_for('static', filename='assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='assets/vendor/aos/aos.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+
+<!-- Main CSS File -->
+<link href="{{ url_for('static', filename='assets/css/main.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+      
+    <meta charset="utf-8">
+    <title>Admin Home</title>
+    <style>
+        .form-container {
+            display: none;
+            margin-top: 20px;
+        }
+        .item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .details {
+            flex: 1;
+            margin-right: 10px; /* Added to give space between details and button */
+        }
+        .button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            background-color: #f44;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #d33;
+        }
+    </style>
+
+    <script>
+        function toggleForm(formId) {
+            var form = document.getElementById(formId);
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+
+        function deleteCourse(courseId) {
+            if (confirm('Are you sure you want to delete this course?')) {
+                window.location.href = `/admin/delete-course/${courseId}`;
+            }
+        }
+
+        function deleteUser(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                window.location.href = `/admin/delete-user/${userId}`;
+            }
+        }
+
+        function updateCourse(courseId) {
+            if (confirm('Are you sure you want to update this course?')) {
+                window.location.href = `/admin/update-course/${courseId}`;
+            }
+        }
+
+        function updateUser(userId) {
+            if (confirm('Are you sure you want to update this user?')) {
+                window.location.href = `/admin/update-user/${userId}`;
+            }
+        }
+        function ViewClass(courseid){
+            window.location.href = `/viewclass/${courseid}`;
+        }
+        function enrollStudent(){
+            window.location.href = `/enroll`;
+
+        }
+    </script>
+</head>
+
+<body class="index-page">
+
+    <header id="header" class="header d-flex align-items-center sticky-top">
+      <div class="container-fluid container-xl position-relative d-flex align-items-center">
+  
+        <a href="index.html" class="logo d-flex align-items-center me-auto">
+          <!-- Uncomment the line below if you also wish to use an image logo -->
+          <!-- <img src="assets/img/logo.png" alt=""> -->
+          <h1 class="sitename">E-Learning</h1>
+        </a>
+  
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a href="{{ url_for('admin_home') }}" class="active">Home<br></a></li>
+            <li><a href="{{ url_for('coursespage') }}">Courses</a></li>
+            <li><a href="{{url_for('students')}}">Students</a></li>
+            <form action="{{ url_for('logout') }}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-danger mb-3">Logout</button>
+            </form>
+            
+          </ul>
+        </nav>
+  
+        
+        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#enrollModal">Enroll student in course</button>
+
+  
+      </div>
+    </header>
+  
+    <main class="main">
+  
+      <!-- Hero Section -->
+      <section id="hero" class="hero section dark-background">
+  
+        <img src="{{ url_for('static', filename='assets/img/about.jpg') }}" alt="" >
+  
+        <div class="container">
+          <h2 data-aos="fade-up" data-aos-delay="100">Learning Today,<br>Leading Tomorrow</h2>
+          <p data-aos="fade-up" data-aos-delay="200">We are team of talented community of Teachers and mentors with E-Learning Courses Facility</p>
+          <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
+            <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addUserModal">Add Teacher/Student</button>
+          </div>
+        </div>
+  
+      </section><!-- /Hero Section -->
+  
+      
+    
+
+    <!-- Add Course Form -->
+    <div id="addCourseForm" class="form-container">
+        <h2>Add Course</h2>
+        <form action="{{ url_for('add_course') }}" method="post">
+            <label for="course_name">Course Name:</label>
+            <input type="text" id="course_name" name="course_name" required><br>
+            <label for="course_description">Description:</label>
+            <textarea id="course_description" name="description" required></textarea><br>
+            <input type="submit" value="Add Course">
+        </form>
+    </div>
+
+    <!-- Add Teacher Form -->
+    <div id="addUserForm" class="form-container">
+        <h2>Add Teacher</h2>
+        <form action="{{ url_for('add_User') }}" method="post">
+            <label for="teacher_username">Username:</label>
+            <input type="text" id="teacher_username" name="username" required><br>
+            <label for="teacher_password">Password:</label>
+            <input type="password" id="teacher_password" name="password" required><br>
+            <label for="teacher_full_name">Full Name:</label>
+            <input type="text" id="teacher_full_name" name="full_name" required><br>
+            <label for="teacher_email">Email:</label>
+            <input type="email" id="teacher_email" name="email" required><br>
+            <label>User Type:</label>
+              <input type="radio" id="teacher" name="user_type" value="teacher" required>
+              <label for="teacher">Teacher</label>
+              <input type="radio" id="student" name="user_type" value="student" required>
+              <label for="student">Student</label><br>
+            
+            <input type="submit" value="Add Teacher">
+        </form>
+    </div>
+
+    
+  
+    
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  
+    <!-- Main JS File -->
+    <script src="assets/js/main.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  
+    <div class="modal fade" id="enrollModal" tabindex="-1" role="dialog" aria-labelledby="enrollModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="enrollModalLabel">Enroll Student in Course</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="{{ url_for('enroll_student') }}">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="course_id">Course ID:</label>
+                            <input type="number" class="form-control" id="course_id" name="course_id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="student_id">Student ID:</label>
+                            <input type="number" class="form-control" id="student_id" name="student_id" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Enroll</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">Add Teacher</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ url_for('add_User') }}" method="post">
+                    <div class="modal-body">
+                        <label for="teacher_username">Username:</label>
+                        <input type="text" class="form-control" id="teacher_username" name="username" required><br>
+                        <label for="teacher_password">Password:</label>
+                        <input type="password" class="form-control" id="teacher_password" name="password" required><br>
+                        <label for="teacher_full_name">Full Name:</label>
+                        <input type="text" class="form-control" id="teacher_full_name" name="full_name" required><br>
+                        <label for="teacher_email">Email:</label>
+                        <input type="email" class="form-control" id="teacher_email" name="email" required><br>
+                        <label>User Type:</label><br>
+                        <input type="radio" id="teacher" name="user_type" value="teacher" required>
+                        <label for="teacher">Teacher</label>
+                        <input type="radio" id="student" name="user_type" value="student" required>
+                        <label for="student">Student</label><br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Teacher</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  
+
+   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+   <!-- Bootstrap Bundle with Popper -->
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  
+  </body>
+</html>
+

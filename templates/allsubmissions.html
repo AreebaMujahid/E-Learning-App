@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Submissions</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Favicons -->
+    <link href="{{ url_for('static', filename='assets/img/favicon.png') }}" rel="icon">
+    <link href="{{ url_for('static', filename='assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  
+
+<!-- Vendor CSS Files -->
+    <link href="{{ url_for('static', filename='assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/vendor/aos/aos.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='assets/css/main.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <style>
+        .form-container {
+            display: none;
+            margin-top: 20px;
+        }
+        .item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .details {
+            flex: 1;
+            margin-right: 10px; /* Added to give space between details and button */
+        }
+        .button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            background-color: #f44;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #d33;
+        }
+    </style>
+
+    <script>
+        function ViewClass(courseid){
+            window.location.href = `/viewclass/${courseid}`;
+        }
+        function shareNotes(courseid)
+        {
+            window.location.href = `/share_notes/${courseid}`;
+        }
+        function showAssignmentForm() {
+            $('#assignmentModal').modal('show');
+        }
+        function toggleForm(formId) {
+            var form = document.getElementById(formId);
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+
+        function deleteCourse(courseId) {
+            if (confirm('Are you sure you want to delete this course?')) {
+                window.location.href = `/admin/delete-course/${courseId}`;
+            }
+        }
+
+        function deleteUser(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                window.location.href = `/admin/delete-user/${userId}`;
+            }
+        }
+
+        function updateCourse(courseId) {
+            if (confirm('Are you sure you want to update this course?')) {
+                window.location.href = `/admin/update-course/${courseId}`;
+            }
+        }
+
+        function updateUser(userId) {
+            if (confirm('Are you sure you want to update this user?')) {
+                window.location.href = `/admin/update-user/${userId}`;
+            }
+        }
+        function ViewClass(courseid){
+            window.location.href = `/viewclass/${courseid}`;
+        }
+        function enrollStudent(){
+            window.location.href = `/enroll`;
+
+        }
+    </script>
+    </head>
+<body>
+    <header id="header" class="header d-flex align-items-center sticky-top">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center">
+  
+            <a href="index.html" class="logo d-flex align-items-center me-auto">
+              <!-- Uncomment the line below if you also wish to use an image logo -->
+              <!-- <img src="assets/img/logo.png" alt=""> -->
+              <h1 class="sitename">E-Learning</h1>
+            </a>
+      
+            <nav id="navmenu" class="navmenu">
+              <ul>
+                <li><a href="{{ url_for('user_home') }}" class="active">Home<br></a></li>
+                <li><a href="{{ url_for('coursespage') }}">Courses</a></li>
+                
+
+                <form action="{{ url_for('logout') }}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger mb-3">Logout</button>
+                </form>
+                
+              </ul>
+              
+            </nav>
+      
+            
+            
+    
+      
+          </div>
+    </header>
+    <div class="container mt-5">
+        <h2>All Submissions for Assignment</h2>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Solution Name</th>
+                    <th>File</th>
+                    <th>User ID</th>
+                    <th>Submitted At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if solutions %}
+                    {% for solution in solutions %}
+                    <tr>
+                        <td>{{ solution[1] }}</td>
+                        <td><a href="{{ url_for('uploaded_file', filename=solution[2]) }}" download>Download Solution</a></td>
+                        <td>{{ solution[3] }}</td>
+                        <td>{{ solution[4] }}</td>
+                        <td>
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#markModal" 
+                                    data-solution-id="{{ solution[0] }}" data-solution-name="{{ solution[1] }}">
+                                Mark Assignment
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="5">No submissions available.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        <a href="{{ url_for('view_class', course_id=course_id) }}" class="btn btn-secondary">Back to Class View</a>
+    </div>
+
+    <!-- Mark Assignment Modal -->
+    <div class="modal fade" id="markModal" tabindex="-1" role="dialog" aria-labelledby="markModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="markModalLabel">Mark Assignment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="markForm" action="{{ url_for('mark_assignment') }}" method="POST">
+                    <div class="modal-body">
+                        <input type="hidden" id="solution_id" name="solution_id">
+                        <div class="form-group">
+                            <label for="marks">Enter Marks</label>
+                            <input type="number" class="form-control" id="marks" name="marks" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit Marks</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vendor JS Files -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Main JS File -->
+    <script src="assets/js/main.js"></script>
+    <script>
+        AOS.init();
+
+        // Custom Script to Handle Modal Data
+        $('#markModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var solutionId = button.data('solution-id'); // Extract info from data-* attributes
+            var solutionName = button.data('solution-name');
+            var modal = $(this);
+            modal.find('#solution_id').val(solutionId);
+            modal.find('#markModalLabel').text('Mark Assignment for ' + solutionName);
+        });
+    </script>
+</body>
+</html>

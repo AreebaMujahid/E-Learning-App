@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Update Course</title>
+</head>
+<body>
+    <h1>Update Course</h1>
+    <a href="{{ url_for('admin_home') }}">Back to Home</a>
+
+    <form action="{{ url_for('update_course', course_id=course.course_id) }}" method="post">
+        <label for="course_name">Course Name:</label>
+        <input type="text" id="course_name" name="course_name" value="{{ course.course_name }}" required><br>
+        
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required>{{ course.description }}</textarea><br>
+        
+        <input type="submit" value="Update Course">
+    </form>
+</body>
+</html>
